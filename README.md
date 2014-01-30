@@ -48,7 +48,7 @@ After you get connected, first message you need to send is `event: connect`.
 #### Messages (AI -> Environment)
 
 ##### Event: connect
-```JSON
+```JavaScript
 { event:"connect", 
   name:"<<your AI's name>>"
 }
@@ -56,13 +56,13 @@ After you get connected, first message you need to send is `event: connect`.
 
 ##### Event: game_state
 If you want one more time the game state, you can ask for it.
-```JSON
+```JavaScript
 { event: "game_state" }
 ```
 
 ##### Event: move
 If you want to move, you need to send a event `move` with location where you want to get.
-```JSON
+```JavaScript
 { event: "move",
   x: integer
 }
@@ -71,7 +71,7 @@ If you want to move, you need to send a event `move` with location where you wan
 #### Messages (Environment -> AI)
 ##### Event: game_rules
 GameRules is first message you will get if you connected succesfully.
-```JSON
+```JavaScript
 { event: "game_rules",
   yourID: integer,
   gameRules: {
@@ -87,7 +87,7 @@ GameRules is first message you will get if you connected succesfully.
 }
 ```
 ##### Event: game_state
-```JSON
+```JavaScript
 { event: "game_state",
   balls: [Ball, Ball, ... Ball],
   field: [Edge, Edge, ... Edge],
@@ -95,7 +95,7 @@ GameRules is first message you will get if you connected succesfully.
 ```
 ##### Event: collision
 When a ball is changing direction.
-```JSON
+```JavaScript
 { event: "collision",
   ball: Ball,
   timestamp: integer
@@ -104,7 +104,7 @@ When a ball is changing direction.
 ##### Event: move
 When a player wants to change his position, you will get an event `move` with his current position and his direction. When he stops from moving, you will get a event move with direction `none`.
 You will get the direction (if is left or right) of a player once a second.
-```JSON
+```JavaScript
 { event: "move",
   player_id: integer,
   x: integer,
@@ -113,12 +113,12 @@ You will get the direction (if is left or right) of a player once a second.
 ```
 ##### Event: game_over
 If you lose, you will get this event.
-```JSON
+```JavaScript
 { event: "game_over" }
 ```
 #### Classes
 ##### Ball
-```JSON
+```JavaScript
 { id: integer,
   position: {
   	x: double,
@@ -131,12 +131,12 @@ If you lose, you will get this event.
 ```
 ##### Edge
 If vacant is true, there's no player on the edge and `player` is undefined.
-```JSON
+```JavaScript
 { vacant: boolean,
   player: Player
 ```
 ##### Player
-```JSON
+```JavaScript
 { id: integer,
   name: string,
   paddle: {
