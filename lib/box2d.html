@@ -1,0 +1,137 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="box2dweb.js"></script>
+  </head>
+  <body>
+    
+    <canvas id="c" width="640" height="640" style="border: 1px solid black"></canvas>
+    <script src="../objects/meth.js" ></script>
+    <script src="../objects/engine.js"></script>
+
+    <script>
+      // rewrite engine
+      Engine.deplaseaza = 10;
+      Engine.clearAll = function() {
+        while (Engine.balls.length) Engine.destroyBall(0);
+        while (Engine.edges.length) {
+          if (!Engine.edges[0].GetUserData().edge.vacant)
+            Engine.destroyPlayer( Engine.edges[0] );
+          Engine.destroyEdge(0);
+        }
+      };
+
+    Engine.updatePlayers = function() {
+      for (var index in Engine.players) {
+        var player = Engine.players[index];
+        var action = player.GetUserData().player.action;
+
+        if ( !action ) return;
+        if ( action.direction == "none" ) return;
+
+        var paddle = player.GetUserData().player.paddle;
+        var paddle_width = GameRules.basePaddleWidth;
+        var paddle_speed = GameRules.basePaddleSpeed;
+       
+        var time_now = GameRules.currentTimestamp;
+        var distance = (time_now - action.timestamp)/GameRules.framesPerSecond * paddle_speed;
+
+        if (action.direction == "left" )
+          distance *= -1;
+
+        paddle.x += distance;
+
+        Engine.calculatePlayer( player );
+
+        action.timestamp = time_now;
+      }
+    };
+
+
+    </script>
+
+    <script>
+      window.WebScoket = window.WebSocket || window.MozWebSocket;
+
+      var GameRules;
+
+      var connection = new WebSocket('ws://localhost:62421');
+
+      connection.onopen = function() {
+        console.log('Conexiune deschisa!');
+      }
+
+      connection.onmessage = function( data ) {
+        var messages = data.data.split('\n');
+
+        while ( messages.length > 1 ) {
+          var message = messages.shift();
+
+          message = JSON.parse( message );
+
+          switch (message.event) {
+            case 'game_state':
+              Engine.clearAll();
+              for (var i = 0, l = message.field.length; i < l; ++i) {
+                var edge = Engine.addEdge();
+                edge.GetUserData().edge = message.field[i];
+              }
+              Engine.initializePolygon(GameRules.baseEdgeWidth, message.field.length);
+              Engine.calculatePolygon();
+
+              for (var i = 0, l = message.balls.length; i < l; ++i) {
+                var ball = Engine.addBall();
+                ball.GetBody().SetPosition({
+                  x: message.balls[i].position.x + 10,
+                  y: message.balls[i].position.y + 10
+                });
+                ball.GetBody().SetLinearVelocity( message.balls[i].linearVelocity );
+                ball.GetUserData().ball = message.balls[i];
+              }
+
+              for (var i = 0, l = message.field.length; i < l; ++i) {
+                if (message.field[i].vacant == true) continue;
+                message.field[i].player.action.timestamp = GameRules.currentTimestamp;
+                Engine.addPlayer( message.field[i].player, Engine.edges[i] );
+              }
+
+            break;
+
+            case 'collision':
+              for (var i = 0, l = Engine.balls.length; i < l; ++i) {
+                if (message.ball.id != Engine.balls[i].GetUserData().ball.id) continue;
+                Engine.balls[i].GetBody().SetPosition({
+                  x: message.ball.position.x + 10,
+                  y: message.ball.position.y + 10
+                });
+                Engine.balls[i].GetBody().SetLinearVelocity( message.ball.linearVelocity );
+               
+                break;
+              }
+            break;
+
+            case 'move':
+              Engine.players[ message.player_id + "" ].GetUserData().player.paddle.x = message.x;
+              Engine.players[ message.player_id + "" ].GetUserData().player.action = {direction: message.direction, timestamp: GameRules.currentTimestamp};
+            break;
+
+            case undefined:
+              GameRules = message;
+              Engine.initializeWorld();
+              Engine.debugDraw();
+              update();
+              break;
+          }
+        }
+      }
+
+      function update() {
+        ++GameRules.currentTimestamp;
+        Engine.update();
+        Engine.world.DrawDebugData();
+        setTimeout(update, 1000/GameRules.framesPerSecond);
+      }
+
+    </script>
+  </body>
+</html>
