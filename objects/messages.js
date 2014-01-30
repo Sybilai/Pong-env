@@ -3,7 +3,7 @@ var Message = {
 
   sendJSON: function(json) {
     json = JSON.stringify( json ) + '\n';
-    // console.log( "------- " + json );
+    // console.log( "E -> DC " + json );
 
     if (Message.socket) {
       Message.socket.write( json );

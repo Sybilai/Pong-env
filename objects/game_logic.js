@@ -11,14 +11,12 @@ var Edge = require('./../models/env/edge_model.js'),
 var Game = {
   field: [],
   balls: [],
-  actions: {},
   players: {},
   scoring: {},
   queueData: [],
   queueCollisions: [],
 
   initialize: function() {
-    Engine.actions = Game.actions;
     Engine.callbackMove = Message.isMoving;
 
     for (var i = 0; i < 4; ++i) {
@@ -87,7 +85,7 @@ var Game = {
       }
     }
 
-    delete Game.actions[ player_id + ""];
+    delete Engine.actions[ player_id + ""];
     delete Game.players[ player_id + ""];
   },
 
@@ -115,9 +113,7 @@ var Game = {
   setAction: function( x, player_id ) {
     x = Math.max( x, 0 );
     x = Math.min( x, GameRules.baseEdgeWidth );
-
-    Engine.actions[ player_id + "" ] = 
-      Game.actions[ player_id + "" ] = new Action( x );
+    Engine.actions[ player_id + "" ] = new Action( x );
   },
 
 
@@ -150,7 +146,7 @@ var Game = {
           Message.collision( body1.ball );
           break;
         }
-/*
+
         if (Game.scoring[ body1.ball.last_player_id + "" ]) {
           ++Game.scoring[ body1.ball.last_player_id + "" ];
         } else {
@@ -166,7 +162,7 @@ var Game = {
 
         Game.destroyBallByID( body1.ball.id );
         if ( Game.isBallNeeded() ) Game.createBall();
-*/
+
         Message.game_state(false, Game.balls, Game.field);
         break;
 

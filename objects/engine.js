@@ -52,8 +52,8 @@ var Engine = {
     Engine.updatePlayers();
     Engine.world.Step(
         1 / GameRules.framesPerSecond   //frame-rate
-      , 10       //velocity iterations
-      , 10       //position iterations
+      , 50       //velocity iterations
+      , 50       //position iterations
     );
 
     Engine.world.ClearForces();
@@ -86,6 +86,7 @@ var Engine = {
     edge.GetBody().SetAngle(angle);
 
     if (edge.GetUserData().player) {
+      edge.GetUserData().player.GetBody().SetAngle( angle );
       Engine.calculatePlayer( edge.GetUserData().player );
     }
   },
@@ -164,6 +165,7 @@ var Engine = {
       var paddle = player.GetUserData().player.paddle;
       var paddle_width = GameRules.basePaddleWidth;
       var paddle_speed = GameRules.basePaddleSpeed;
+
       if ( paddle.x == action.x  || 
           (paddle.x == Meth.edge_length - paddle_width
             && action.x > Meth.edge_length - paddle_width) ) return;
@@ -175,26 +177,20 @@ var Engine = {
       if ( paddle.x > action.x ) {
         paddle.x = Math.max( paddle.x - distance, 0 );
       } else {
-        if ( paddle.x + paddle_width + distance 
-              > Meth.edge_length ) {
-          paddle.x = Meth.edge_length - paddle_width;
-        } else {
-          paddle.x = paddle.x + distance;
-        }
+        paddle.x = Math.min(Meth.edge_length - paddle_width, paddle.x + distance);
       }
 
       Engine.calculatePlayer( player );
 
-      var direction = "";
+      var direction = "left";
       if ( paddle.x == action.x || 
           (paddle.x == Meth.edge_length - paddle_width 
             && action.x > Meth.edge_length - paddle_width)) {
         direction = "none";
       } else if ( paddle.x < action.x ) {
         direction = "right";
-      } else {
-        direction = "left";
       }
+
       player.GetUserData().player.action.direction = direction;
       
       if (time_now - action.last_time_reported > GameRules.framesPerSecond || direction == "none") {

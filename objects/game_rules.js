@@ -5,7 +5,7 @@ var GameRules = {
 
   basePaddleWidth: 1,
   basePaddleHeight: 0.2,
-  basePaddleToEdgeDistance: 0.2,
+  basePaddleToEdgeDistance: 0,
   basePaddleSpeed: 2,
 
   framesPerSecond: 30,
