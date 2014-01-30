@@ -28,6 +28,7 @@ var server = net.createServer( function(current_client) {
         break;
 
       case 'viz':
+        console.log('Viz connected:' + current_client.center_id );
         var client = new Client();
         client.socket = current_client;
         client.permissions = {
@@ -42,6 +43,7 @@ var server = net.createServer( function(current_client) {
         break;
 
       case 'viz1':
+        console.log('VizA connected: ' + current_client.center_id );
         var client = new Client();
         client.socket = current_client;
         client.permissions = {
@@ -57,6 +59,7 @@ var server = net.createServer( function(current_client) {
 
 
       case 'player':
+        console.log('Succesfully Connected: ' + current_client.center_id );
         data = JSON.parse( data );
         
         var client = new Client();
