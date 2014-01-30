@@ -21,7 +21,7 @@ var Engine = {
   initializeWorld: function() {
     Meth.edge_length = GameRules.baseEdgeWidth;
 
-    this.world = new b2World( new b2Vec2(0, 0),  true );
+    this.world = new b2World( new b2Vec2(0, 0),  false );
     this.edges = [];
     this.players = {};
     this.actions = {};
@@ -84,6 +84,10 @@ var Engine = {
   calculateEdge: function(edge, position, angle) {
     edge.GetBody().SetPosition({x: position.x + this.deplaseaza, y: position.y + this.deplaseaza});
     edge.GetBody().SetAngle(angle);
+
+    if (edge.GetUserData().player) {
+      Engine.calculatePlayer( edge.GetUserData().player );
+    }
   },
 
   destroyEdge: function( index ) {

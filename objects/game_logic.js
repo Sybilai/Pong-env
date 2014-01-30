@@ -58,6 +58,7 @@ var Game = {
     if ( !have_vacant_edge ) {
       Game.field.push( edge );
       var edge_pointer = Engine.addEdge( edge );
+      Engine.initializePolygon(GameRules.baseEdgeWidth, Game.field.length);
       Engine.calculatePolygon();
       Engine.addPlayer( player, edge_pointer );
     }
@@ -149,7 +150,7 @@ var Game = {
           Message.collision( body1.ball );
           break;
         }
-
+/*
         if (Game.scoring[ body1.ball.last_player_id + "" ]) {
           ++Game.scoring[ body1.ball.last_player_id + "" ];
         } else {
@@ -165,7 +166,7 @@ var Game = {
 
         Game.destroyBallByID( body1.ball.id );
         if ( Game.isBallNeeded() ) Game.createBall();
-
+*/
         Message.game_state(false, Game.balls, Game.field);
         break;
 
