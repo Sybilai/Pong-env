@@ -144,10 +144,10 @@ var Engine = {
   destroyPlayer: function(edge) {
     if (!edge.GetUserData().player) return;
 
-    Engine.players[ edge.GetUserData().edge.player.id + "" ] = null;
+    delete Engine.players[ edge.GetUserData().edge.player.id + "" ];
     Engine.destroyObj( edge.GetUserData().player );
-    edge.GetUserData().edge.player = null;
-    edge.GetUserData().player = null;
+    delete edge.GetUserData().edge.player;
+    delete edge.GetUserData().player;
   },
 
   updatePlayers: function() {
@@ -156,6 +156,7 @@ var Engine = {
       var action = Engine.actions[index];
 
       if ( !action ) return;
+
       var paddle = player.GetUserData().player.paddle;
       var paddle_width = GameRules.basePaddleWidth;
       var paddle_speed = GameRules.basePaddleSpeed;
@@ -203,7 +204,7 @@ var Engine = {
 
   destroyObj: function(obj) {
     this.world.DestroyBody( obj.GetBody() );
-    obj = null;
+    delete obj;
   },
 
   addBall: function(ball_pointer) {
