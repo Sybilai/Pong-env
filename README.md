@@ -1,8 +1,14 @@
-### Port
+### ROOM1
 ```
-http://sybilai.com:8124
+Env: http://sybilai.com:8124
+Viz: http://sybilai.com/vis/pong/
 ```
 
+### ROOM2
+```
+Env: http://sybilai.com:8125
+Viz: http://sybilai.com/vis/pong2/
+```
 
 ### Concept
 We have the **environment**, the **visualizer** and your program (lets call it **AI** because this is what is it).
