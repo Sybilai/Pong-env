@@ -7,7 +7,7 @@ http://sybilai.com:8124
 ### Concept
 We have the **environment**, the **visualizer** and your program (lets call it **AI** because this is what is it).
 
-**Environment** is our server. It is our "referee".
+**Environment** is our "referee".
 
 **Visualizer** is the visual representation of the game. [Check it out](http://sybilai.com/vis/pong/) to see how it looks like.
 
@@ -24,14 +24,16 @@ You will need to know some geometry, but not to much. [Check this article](http:
 For calculating the polygon (which is regular) we will need circumradius, apothem (the distance from the center to any side) and exterior angle.
 Lets note with `s` the edge's length, with `a` the apothem and with `n` the number of edges.
 
-For circumradius and apothem use this formula:
-{<1>}![Circumradius formula from Wikipedia](http://upload.wikimedia.org/math/a/f/d/afd0d8a51e81269521633ef79a3c22bc.png)
+For circumradius and apothem use this formula: <br/>
+![Circumradius formula from Wikipedia](http://upload.wikimedia.org/math/a/f/d/afd0d8a51e81269521633ef79a3c22bc.png)
 
-The exterior angle is equal with:
-{<2>}![](http://latex.codecogs.com/gif.latex?%5Cfrac%7B2%5Cpi%7D%7Bn%7D)
+The exterior angle is equal with: <br />
+![Formula](http://latex.codecogs.com/gif.latex?%5Cfrac%7B2%5Cpi%7D%7Bn%7D)
  
 Now, first edge has this coordinates `[(-s/2, -a), (s/2, -a)]`.
-Second edge is the first edge, rotated with the **exterior angle** in counter trigonometric direction. And so on.
+Second edge is the first edge, rotated with the **exterior angle** in counter trigonometric direction. And so on. <br />
+![Gif](http://i.imgur.com/pu14E9H.gif)
+
 
 Every player has his own edge and paddle. Paddle's position is a value between `[0, (edge's length - paddle's length)]` which represents where is the left point of the paddle. Paddle has width, height, speed, distance between paddle and edge, and position on edge, so keep an eye on all of them.
 
