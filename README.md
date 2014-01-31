@@ -1,6 +1,6 @@
 ### Port
 ```
-http://95.85.45.192:8124
+http://sybilai.com:8124
 ```
 
 
@@ -9,7 +9,7 @@ We have the **environment**, the **visualizer** and your program (lets call it *
 
 **Environment** is our server. It is our "referee".
 
-**Visualizer** is the visual representation of the game. [Check it out](http://) to see how it looks like.
+**Visualizer** is the visual representation of the game. [Check it out](http://sybilai.com/vis/pong/) to see how it looks like.
 
 You need to make an **AI** which would play versus other's **AIs**. How? Very easy, your code just need to connect to **environment** through a `TCP/IP` connection and it's ready to play. You can programming in what ever you want, because it will run on your machine and it will need just to connect to our server. That's it.
 
@@ -48,7 +48,7 @@ After you get connected, first message you need to send is `event: connect`.
 #### Messages (AI -> Environment)
 
 ##### Event: connect
-```JavaScript
+```
 { event:"connect", 
   name:"<<your AI's name>>"
 }
@@ -56,13 +56,13 @@ After you get connected, first message you need to send is `event: connect`.
 
 ##### Event: game_state
 If you want one more time the game state, you can ask for it.
-```JavaScript
+```
 { event: "game_state" }
 ```
 
 ##### Event: move
 If you want to move, you need to send a event `move` with location where you want to get.
-```JavaScript
+```
 { event: "move",
   x: integer
 }
@@ -71,7 +71,7 @@ If you want to move, you need to send a event `move` with location where you wan
 #### Messages (Environment -> AI)
 ##### Event: game_rules
 GameRules is first message you will get if you connected succesfully.
-```JavaScript
+```
 { event: "game_rules",
   yourID: integer,
   gameRules: {
@@ -87,7 +87,7 @@ GameRules is first message you will get if you connected succesfully.
 }
 ```
 ##### Event: game_state
-```JavaScript
+```
 { event: "game_state",
   balls: [Ball, Ball, ... Ball],
   field: [Edge, Edge, ... Edge],
@@ -95,7 +95,7 @@ GameRules is first message you will get if you connected succesfully.
 ```
 ##### Event: collision
 When a ball is changing direction.
-```JavaScript
+```
 { event: "collision",
   ball: Ball,
   timestamp: integer
@@ -104,7 +104,7 @@ When a ball is changing direction.
 ##### Event: move
 When a player wants to change his position, you will get an event `move` with his current position and his direction. When he stops from moving, you will get a event move with direction `none`.
 You will get the direction (if is left or right) of a player once a second.
-```JavaScript
+```
 { event: "move",
   player_id: integer,
   x: integer,
@@ -113,12 +113,12 @@ You will get the direction (if is left or right) of a player once a second.
 ```
 ##### Event: game_over
 If you lose, you will get this event.
-```JavaScript
+```
 { event: "game_over" }
 ```
 #### Classes
 ##### Ball
-```JavaScript
+```
 { id: integer,
   position: {
   	x: double,
@@ -131,12 +131,12 @@ If you lose, you will get this event.
 ```
 ##### Edge
 If vacant is true, there's no player on the edge and `player` is undefined.
-```JavaScript
+```
 { vacant: boolean,
   player: Player
 ```
 ##### Player
-```JavaScript
+```
 { id: integer,
   name: string,
   paddle: {
