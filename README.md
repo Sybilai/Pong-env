@@ -35,7 +35,7 @@ Second edge is the first edge, rotated with the **exterior angle** in counter tr
 ![Gif](http://i.imgur.com/pu14E9H.gif)
 
 
-Every player has his own edge and paddle. Paddle's position is a value between `[0, (edge's length - paddle's length)]` which represents where is the left point of the paddle. Paddle has width, height, speed, distance between paddle and edge, and position on edge, so keep an eye on all of them.
+Every player has his own edge and paddle. Paddle's position is a value between `[0, (edge's length - paddle's length)]` which represents where is the left point of the paddle on the edge. Paddle has width, height, speed, distance between paddle and edge, and position on edge, so keep an eye on all of them.
 
 Balls are different. For each one you get the position and the linearVelocity.
 
@@ -45,7 +45,13 @@ The constant datas are in Game Rules which is first thing you will get. For numb
 
 > It's necessary to put `\n` at the end of every stringified JSON object.
 
-After you get connected, first message you need to send is `event: connect`.
+#### Steps
+You will:
+1. Send `event:connect`
+2. Get `event:game_rules`
+3. Get `event:game_state`
+
+Now you can send `event:move` and `event:game_state`, and you can get `event:move`, `event:collision`, `event:game_state`, `event:game_over`.
 
 #### Messages (AI -> Environment)
 
