@@ -164,4 +164,5 @@ If vacant is true, there's no player on the edge and `player` is undefined.
   action: {
   	direction: left/right/none
   }
+}
 ```
