@@ -7,38 +7,38 @@ Viz: http://sybilai.com/vis/pong/
 ### Concept
 We have the **environment**, the **visualizer**, and your program (lets call it **AI**).
 
-**Environment** is the "referee".
+The **environment** is the "referee".
 
-**Visualizer** is the visual representation of the game. [Check it out](http://sybilai.com/vis/pong/) to see how it looks like.
+The **visualizer** is the visual representation of the game. [Check it out](http://sybilai.com/vis/pong/) to see how it looks like.
 
-You need to write an **AI** which would play versus other's **AIs**. How? Very easy, your **AI** just need to connect to **environment** through a `TCP/IP` connection and it's ready to play. You can programming in what ever you want, because it will run on your machine. That's it.
+You need to write an **AI** which will play against others' **AIs**. How? Simple, your **AI** just need to connect to the **environment** through a `TCP/IP` connection and it's ready to play. You can programme in what programming language you want, because it will run on your machine. That's it.
 
-Every message sent from **environment** to **AI** and vice-versa is formed from one or more stringified JSON objects with `\n` at end. 
+Every message sent from the **environment** to the **AI** and vice-versa is formed from one or more stringified JSON objects with `\n` at end. 
 
 ### Pong
 
-Our first game is Pong, the classic game, with one improvement, supports more players at once. Engine physics from behind is [box2dweb](https://code.google.com/p/box2dweb/).
+Our first game is Pong, the classic game, with an added feature, it supports more than two players at once. The physics engine that runs behind our game is [box2dweb](https://code.google.com/p/box2dweb/).
+u
+You will need to know some geometry, but not too much. [Check this article](http://en.wikipedia.org/wiki/Regular_polygon)  about regular polygons from Wikipedia.  
 
-You will need to know some geometry, but not to much. [Check this article](http://en.wikipedia.org/wiki/Regular_polygon)  about regular polygons from Wikipedia.  
+To construct the regular polygon you will need the circumradius, the apothem (the distance from the center to any side) and the exterior angle.
+Let's note the edge's length with `s` , the apothem with `a`, and the number of edges with `n`.
 
-For calculating the polygon (which is regular) we will need circumradius, apothem (the distance from the center to any side) and exterior angle.
-Lets note the edge's length with `s` , the apothem with `a`, and the number of edges with `n`.
-
-For calculate circumradius and apothem use this formula: <br/>
+To calculate the circumradius and the apothem use this formula: <br/>
 ![Circumradius formula from Wikipedia](http://upload.wikimedia.org/math/a/f/d/afd0d8a51e81269521633ef79a3c22bc.png)
 
 The exterior angle is equal with: <br />
 ![Formula](http://latex.codecogs.com/gif.latex?%5Cfrac%7B2%5Cpi%7D%7Bn%7D)
  
-Now, first edge has this coordinates `[(-s/2, -a), (s/2, -a)]`.
-Second edge is the first edge, rotated with the **exterior angle** in counter trigonometric direction. And so on. <br />
+Now, the first edge has the following coordinates `[(-s/2, -a), (s/2, -a)]`.
+The second edge is the first edge, rotated with the **exterior angle** in counter trigonometric direction. The same applies for the rest of the edges. <br />
 ![Gif](http://i.imgur.com/pu14E9H.gif)
 
-Every player has his own edge and paddle. Paddle's position is a value between `[0, (edge's length - paddle's length)]` which represents where is the left point of the paddle on the edge. Paddle has width, height, speed, distance between paddle and edge, and position on edge.
+Every player has his own edge and paddle. The paddle's position is a value between `[0, (edge's length - paddle's length)]` which represents where is the left point of the paddle on the edge. The paddle has width, height, speed, distance between the paddle and the edge, and the position on the edge.
 
-Balls are different. For each one you get the position and the linearVelocity.
+The balls are different. For each one of the balls you get the position and the linearVelocity.
 
-The constant datas are in Game Rules which is the first message you will get. For number of edges, position of paddles, balls, etc, you will need to check the Game State.
+The constant datas are in the Game Rules which is the first message you will get. For number of edges, position of paddles, balls, etc, you will need to check the Game State.
 
 ### Messages
 
@@ -46,7 +46,7 @@ The constant datas are in Game Rules which is the first message you will get. Fo
 
 #### Steps
 You will:
-1. Connect to `http://sybilai.com:8124` with a `TCP/IP` connection
+1. Connect to `http://sybilai.com:8124` by using a `TCP/IP` connection
 2. Send `event:connect`
 3. Get `event:game_rules`
 4. Get `event:game_state`
@@ -63,13 +63,13 @@ Now you can send `event:move` and `event:game_state`, and you can get `event:mov
 ```
 
 ##### Event: game_state
-If you want one more time the game state, you can ask for it.
+If you want to get the game state one more time, you can ask for it.
 ```
 { event: "game_state" }
 ```
 
 ##### Event: move
-If you want to move, you need to send a event `move` with location where you want to get.
+If you want to move, you will need to send an event `move` with the location of where you want to get.
 ```
 { event: "move",
   x: integer
@@ -78,7 +78,7 @@ If you want to move, you need to send a event `move` with location where you wan
 
 #### Messages (Environment -> AI)
 ##### Event: game_rules
-GameRules is first message you will get if you connected succesfully.
+GameRules is the first message you will get if you connected succesfully.
 ```
 { event: "game_rules",
   yourID: integer,
@@ -114,8 +114,8 @@ When a ball is changing direction.
 ```
 
 ##### Event: move
-When a player wants to change his position, you will get an event `move` with his current position and his direction. When he stops from moving, you will get a event move with direction `none`.
-You will get the direction (if is left or right) of a player once a second.
+When a player wants to change his position, you will get an event `move` with his current position and his current direction. When he stops from moving, you will get a event move with direction `none`.
+You will get the direction (if it is left or right) of a player once a second.
 ```
 { event: "move",
   player_id: integer,
