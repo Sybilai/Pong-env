@@ -1,9 +1,3 @@
-### ROOM1
-```
-Env: http://sybilai.com:8124
-Viz: http://sybilai.com/vis/pong/
-```
-
 ### Concept
 We have the **environment**, the **visualizer**, and your program (lets call it **AI**).
 
